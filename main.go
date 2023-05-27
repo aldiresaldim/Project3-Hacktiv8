@@ -56,25 +56,21 @@ func main() {
 }
 
 func updateData(db *sql.DB) {
-	// Menghasilkan angka acak antara 1 hingga 100 untuk water dan wind
 	water := rand.Intn(100) + 1
 	wind := rand.Intn(100) + 1
 
-	// Mengubah data di database menggunakan API
 	_, err := db.Exec("UPDATE update SET water = $1, wind = $2 WHERE id = $3", water, wind, 1)
 	if err != nil {
 		log.Println("Failed to update data:", err)
 		return
 	}
 
-	// Menyimpan data yang diperbarui ke tabel di PostgreSQL
 	_, err = db.Exec("INSERT INTO update (water, wind) VALUES ($1, $2)", water, wind)
 	if err != nil {
 		log.Println("Failed to insert data:", err)
 		return
 	}
 
-	// Menampilkan status dari hasil update data
 	log.Println("Water:", water, "- Status:", getWaterStatus(water))
 	log.Println("Wind:", wind, "- Status:", getWindStatus(wind))
 }
